@@ -3,6 +3,7 @@ package main
 import (
 	"blog/pkg/logger"
 	"blog/pkg/route"
+	"blog/pkg/types"
 	"database/sql"
 	"fmt"
 	"html/template"
@@ -30,7 +31,6 @@ func aboutHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func notFoundHandler(w http.ResponseWriter, r *http.Request) {
-
 	w.WriteHeader(http.StatusNotFound)
 	fmt.Fprint(w, "<h1>请求页面未找到 :(</h1><p>如有疑惑，请联系我们。</p>")
 }
@@ -49,22 +49,6 @@ func (a Article) Link() string {
 	}
 
 	return showUrl.String()
-}
-
-// RouteName2URL 通过路由名称来获取 URL
-func RouteName2URL(routeName string, pairs ...string) string {
-	url, err := router.Get(routeName).URL(pairs...)
-	if err != nil {
-		logger.LogError(err)
-		return ""
-	}
-
-	return url.String()
-}
-
-// Int64ToString 将 int64 转换为 string
-func Int64ToString(num int64) string {
-	return strconv.FormatInt(num, 10)
 }
 
 func (a Article) Delete() (rowsAffected int64, err error) {
@@ -102,7 +86,7 @@ func articlesShowHandler(w http.ResponseWriter, r *http.Request) {
 		tmpl, err := template.New("show.gohtml").
 			Funcs(template.FuncMap{
 				"RouteName2URL": route.Name2URL,
-				"Int64ToString": Int64ToString,
+				"Int64ToString": types.Int64ToString,
 			}).
 			ParseFiles("resources/views/articles/show.gohtml")
 
