@@ -67,7 +67,7 @@ func Int64ToString(num int64) string {
 }
 
 func (a Article) Delete() (rowsAffected int64, err error) {
-	rs, err := db.Exec("delect from articles where id = " + strconv.FormatInt(a.ID, 10))
+	rs, err := db.Exec("delete from articles where id = " + strconv.FormatInt(a.ID, 10))
 
 	if err != nil {
 		return 0, err
